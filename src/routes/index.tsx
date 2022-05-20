@@ -2,7 +2,7 @@ import styles from './Routes.module.scss';
 
 import { useRecoil, useRecoilValue } from '../hooks/state';
 import { mSearchBtnClickState, searchInputValue } from '../states/search';
-import MSearchModal from '../components/MSearchModal';
+import MSearchModal from '../components/Modal/MSearchModal';
 import { SearchIcon } from '../assets/index';
 import { getClinicalTrialData } from '../services/clinicalTrial';
 import { useQuery } from 'react-query';
@@ -39,7 +39,7 @@ const RootRoute = () => {
           <button type='submit'>검색</button>
         </div>
         <button type='button' onClick={handleMSearchBtnClick} className={styles.mInputWrap}>
-          <span>질환명을 입력해주세요.</span>
+          <span>{searchText.length !== 0 ? searchText : '질환명을 입력해주세요.'}</span>
           <SearchIcon className={styles.icon} />
         </button>
         {!isTextEmpty && (
@@ -52,55 +52,15 @@ const RootRoute = () => {
                 <span>간암</span>
               </button>
             </li>
-            {/* {data &&
-              data.map((disease: IClinicalTrial, index: number) => {
-                if (index > 6) return null;
-                return (
-                  <SearchResult
-                    key={`clinical-${disease.sickCd}${Math.random()}`}
-                    keyword={searchText}
-                    sickNm={disease.sickNm}
-                    index={index}
-                  />
-                );
-              })} */}
+            <li className={styles.keyword}>
+              <button type='button'>
+                <SearchIcon className={styles.icon} />
+                <span>간암</span>
+              </button>
+            </li>
             {!isLoading && !data && <li className={styles.state}>검색어가 없습니다.</li>}
           </ul>
         )}
-        {/*       <ul className={styles.searchKeywordWrap}>
-          <li className={styles.state}>추천 검색어</li>
-          <li className={styles.keyword}>
-            <button type='button'>
-              <SearchIcon className={styles.icon} />
-              <span>간암</span>
-            </button>
-          </li>
-          <li className={styles.keyword}>
-            <button type='button'>
-              <SearchIcon className={styles.icon} />
-              <span>간암</span>
-            </button>
-          </li>
-          <li className={styles.keyword}>
-            <button type='button'>
-              <SearchIcon className={styles.icon} />
-              <span>간암</span>
-            </button>
-          </li>
-          <li className={styles.keyword}>
-            <button type='button'>
-              <SearchIcon className={styles.icon} />
-              <span>간암</span>
-            </button>
-          </li>
-          <li className={styles.keyword}>
-            <button type='button'>
-              <SearchIcon className={styles.icon} />
-              <span>간암</span>
-            </button>
-          </li>
-        </ul>
-  */}
       </div>
     </form>
   );

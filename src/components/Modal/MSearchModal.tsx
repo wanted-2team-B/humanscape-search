@@ -1,9 +1,7 @@
-import ReactDOM from 'react-dom';
-
 import { useState } from 'react';
-import { useRecoil } from '../hooks/state';
-import { mSearchBtnClickState } from '../states/search';
-import { BackIcon, SearchIcon, ClearIcon } from '../assets/index';
+import { useRecoil } from '../../hooks/state';
+import { mSearchBtnClickState } from '../../states/search';
+import { BackIcon, SearchIcon, ClearIcon } from '../../assets/index';
 import styles from './MSearchModal.module.scss';
 
 const ModalOverlay = () => {
@@ -67,8 +65,4 @@ const ModalOverlay = () => {
   );
 };
 
-const MSearchModal = () => {
-  return <>{ReactDOM.createPortal(<ModalOverlay />, document.getElementById('overlay-root') as HTMLInputElement)}</>;
-};
-
-export default MSearchModal;
+export default ModalOverlay;
