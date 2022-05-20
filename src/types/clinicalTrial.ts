@@ -1,3 +1,15 @@
+export interface IClinicalTrials {
+  response: {
+    body: {
+      items: {
+        item: IClinicalTrial[];
+      };
+      totalCount: number;
+    };
+  };
+}
+
 export interface IClinicalTrial {
-  item: string;
+  sickCd: string;
+  sickNm: string;
 }
