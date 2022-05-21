@@ -6,6 +6,7 @@ import styles from './SearchResultItem.module.scss';
 
 import { boldedSickNm } from '../../libs/bold';
 import { activeIndexState, searchInputValue } from '../../states/search';
+import { SearchIcon } from '../../assets/index';
 
 interface IProps {
   index: number;
