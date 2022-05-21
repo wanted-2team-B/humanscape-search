@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import Input from '../Input/Input';
@@ -16,7 +15,6 @@ import { sortResult } from '../../libs/sort';
 const ModalOverlay = () => {
   const setMSearchClicked = useSetRecoilState(mSearchBtnClickState);
   const [searchText, setSearchText] = useRecoilState(searchInputValue);
-  const [showClearValueBtn, setShowClearValueBtn] = useState(false);
   const { data, isLoading, error, isTextEmpty } = useClinicalTrialData();
   const sortedData = data && sortResult(data, searchText);
 
@@ -35,7 +33,7 @@ const ModalOverlay = () => {
           <BackIcon className={styles.backIcon} />
         </button>
         <Input />
-        {showClearValueBtn && (
+        {!isTextEmpty && (
           <button type='button' onClick={handleClearInput}>
             <ClearIcon className={styles.clearIcon} />
           </button>

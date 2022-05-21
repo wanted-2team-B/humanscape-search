@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+
 import ModalOverlay from './Modal/MSearchModal';
 
 const MSearchModal = () => {

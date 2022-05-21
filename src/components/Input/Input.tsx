@@ -12,7 +12,7 @@ const Input = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { data } = useClinicalTrialData();
   const sortedData = data && sortResult(data, searchText);
-  const [windowSize, setWindowSize] = useState(0);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
 
   useEffect(() => {
     if (!inputRef.current || !sortedData) return;
@@ -30,6 +30,7 @@ const Input = () => {
   }, []);
 
   const handleItemActive = (e: IKeyboard) => {
+    // if (e.nativeEvent.isComposing) return;
     if (!sortedData) return;
     const itemLength = windowSize < 1000 ? sortedData.length : 7;
     const key = e.key || e.keyCode;

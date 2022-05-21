@@ -3,14 +3,18 @@
 @use '/src/styles/mixins/responsive';
 
 .app {
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+  background-color: colors.$BACK;
+
   .mainWrap {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     padding-top: 250px;
-    background-color: colors.$BACK;
 
     .title {
       margin-bottom: 22px;
