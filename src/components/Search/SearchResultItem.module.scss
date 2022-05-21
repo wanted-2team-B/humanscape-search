@@ -1,0 +1,33 @@
+@use '/src/styles/constants/colors';
+
+.keyword {
+  button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .icon {
+      width: 18px;
+      margin-right: 10px;
+    }
+
+    span {
+      margin-top: -1px;
+      font-size: 17px;
+      font-weight: 400;
+
+      b {
+        font-weight: 600;
+      }
+    }
+  }
+
+  &.isActive {
+    background-color: colors.$BACK;
+  }
+}
