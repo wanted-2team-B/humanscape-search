@@ -12,6 +12,7 @@ const Input = () => {
   const { data } = useClinicalTrialData();
   const sortedData = data && sortResult(data, searchText);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
+  const sliceData = sortedData && sortedData.slice(0, 7);
 
   useEffect(() => {
     if (!inputRef.current || !sortedData) return;
@@ -30,8 +31,8 @@ const Input = () => {
 
   const handleItemActive = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) return;
-    if (!sortedData) return;
-    const itemLength = windowSize < 1000 ? sortedData.length : 7;
+    if (!sortedData || !sliceData) return;
+    const itemLength = windowSize < 1000 ? sortedData.length : sliceData.length;
     const key = e.key || e.keyCode;
 
     if (key === 'ArrowUp' || key === 38) {

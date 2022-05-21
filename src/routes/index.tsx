@@ -21,7 +21,7 @@ const RootRoute = () => {
   const { data, isLoading, error, isTextEmpty } = useClinicalTrialData();
   const searchText = useRecoilValue(searchInputValue);
   const sortedData = data && sortResult(data, searchText);
-  const spliceArr = sortedData && sortedData.slice(0, 7);
+  const sliceData = sortedData && sortedData.slice(0, 7);
 
   const handleMSearchBtnClick = () => {
     setMSearchClicked(true);
@@ -49,8 +49,8 @@ const RootRoute = () => {
           <ul className={styles.searchKeywordWrap}>
             {!isLoading && data && <li className={styles.state}>추천 검색어</li>}
             {isLoading && <li className={styles.state}>검색 중...</li>}
-            {spliceArr &&
-              spliceArr.map((disease: IClinicalTrial, index: number) => (
+            {sliceData &&
+              sliceData.map((disease: IClinicalTrial, index: number) => (
                 <SearchResultItem key={`clinical-${disease.sickCd}`} sickNm={disease.sickNm} index={index} />
               ))}
             {!isLoading && !data && <li className={styles.state}>검색어가 없습니다.</li>}
