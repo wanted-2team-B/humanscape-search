@@ -15,7 +15,7 @@ import { sortResult } from '../../libs/sort';
 const ModalOverlay = () => {
   const setMSearchClicked = useSetRecoilState(mSearchBtnClickState);
   const [searchText, setSearchText] = useRecoilState(searchInputValue);
-  const { data, isLoading, error, isTextEmpty } = useClinicalTrialData();
+  const { data, isLoading, isTextEmpty } = useClinicalTrialData();
   const sortedData = data && sortResult(data, searchText);
 
   const handleSearchModalClose = () => {

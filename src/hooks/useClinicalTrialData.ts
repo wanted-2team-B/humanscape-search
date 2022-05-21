@@ -1,5 +1,7 @@
 import { useRecoilValue } from 'recoil';
 import { useQuery } from 'react-query';
+import toast from 'react-hot-toast';
+
 import { searchInputValue } from '../states/search';
 import useDebounce from './useDebounce';
 import { getClinicalTrialData } from '../services/clinicalTrial';
@@ -16,10 +18,13 @@ const useClinicalTrialData = () => {
     () => getClinicalTrialData(debounceInputValue),
     {
       enabled: !isTextEmpty && checkWord(debounceInputValue),
-      cacheTime: 10 * 60 * 1000, // 10분정도 캐시에 머무르고 그 이후로 가비지 콜렉터로 들어간다..
-      staleTime: 5 * 60 * 1000, // 5분이 지나면 최신화가 필요하다고 생각하고 refetch
-      onError(err) {
-        window.location.reload();
+      cacheTime: 10 * 60 * 1000,
+      staleTime: 5 * 60 * 1000,
+      retry: false,
+      refetchOnWindowFocus: false,
+      onError(err: ErrorEvent) {
+        toast.remove();
+        toast.error(`${err.message}! 새로 고침 해주세요.`);
       },
     }
   );
