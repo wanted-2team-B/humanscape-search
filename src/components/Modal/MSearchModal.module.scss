@@ -1,9 +1,11 @@
 @use '/src/styles/constants/colors';
 @use '/src/styles/mixins/position';
+@use '/src/styles/mixins/responsive';
 
 .modalWrap {
-  @include position.fixed(0 auto auto 0);
   z-index: 1;
+  display: none;
+  @include position.fixed(0 auto auto 0);
   width: 100%;
   height: 100vh;
   overflow: hidden;
@@ -52,9 +54,10 @@
   }
 
   .searchKeywordWrap {
-    width: 650px;
+    height: 100%;
     padding: 22px;
     margin-top: 3px;
+    overflow: scroll;
     background-color: colors.$WHITE;
     border-radius: 20px;
 
@@ -83,5 +86,10 @@
         }
       }
     }
+  }
+}
+@include responsive.between(M, MD) {
+  .modalWrap {
+    display: block;
   }
 }

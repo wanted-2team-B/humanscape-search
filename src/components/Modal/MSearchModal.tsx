@@ -1,27 +1,31 @@
 import { useState } from 'react';
-import { useRecoil } from '../../hooks/state';
-import { mSearchBtnClickState } from '../../states/search';
-import { BackIcon, SearchIcon, ClearIcon } from '../../assets/index';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+
+import Input from '../Input/Input';
+import SearchResult from '../Search/SearchResultItem';
+
 import styles from './MSearchModal.module.scss';
 
+import { mSearchBtnClickState, searchInputValue } from '../../states/search';
+import { IClinicalTrial } from '../../types/clinicalTrial';
+import { BackIcon, ClearIcon, SearchIcon } from '../../assets';
+
+import useClinicalTrialData from '../../hooks/useClinicalTrialData';
+import { sortResult } from '../../libs/sort';
+
 const ModalOverlay = () => {
-  const [, setMSearchClicked] = useRecoil(mSearchBtnClickState);
-  const [enteredInput, setEnteredInput] = useState('');
+  const setMSearchClicked = useSetRecoilState(mSearchBtnClickState);
+  const [searchText, setSearchText] = useRecoilState(searchInputValue);
   const [showClearValueBtn, setShowClearValueBtn] = useState(false);
+  const { data, isLoading, error, isTextEmpty } = useClinicalTrialData();
+  const sortedData = data && sortResult(data, searchText);
 
   const handleSearchModalClose = () => {
     setMSearchClicked(false);
   };
 
-  const handleEnteredInput = (event: React.FormEvent<HTMLInputElement>) => {
-    setEnteredInput(event.currentTarget.value);
-    if (enteredInput.length > 0) setShowClearValueBtn(true);
-    else setShowClearValueBtn(false);
-  };
-
   const handleClearInput = () => {
-    setEnteredInput('');
-    setShowClearValueBtn(false);
+    setSearchText('');
   };
 
   return (
@@ -30,7 +34,7 @@ const ModalOverlay = () => {
         <button type='button' className={styles.backBtn} onClick={handleSearchModalClose}>
           <BackIcon className={styles.backIcon} />
         </button>
-        <input type='text' value={enteredInput} onChange={handleEnteredInput} placeholder='질환명을 입력해 주세요.' />
+        <Input />
         {showClearValueBtn && (
           <button type='button' onClick={handleClearInput}>
             <ClearIcon className={styles.clearIcon} />
@@ -40,27 +44,17 @@ const ModalOverlay = () => {
           <SearchIcon className={styles.searchIcon} />
         </button>
       </div>
-      <ul className={styles.searchKeywordWrap}>
-        <li className={styles.state}>추천 검색어</li>
-        <li className={styles.keyword}>
-          <button type='button'>
-            <SearchIcon className={styles.icon} />
-            <span>간암</span>
-          </button>
-        </li>
-        <li className={styles.keyword}>
-          <button type='button'>
-            <SearchIcon className={styles.icon} />
-            <span>간암</span>
-          </button>
-        </li>
-        <li className={styles.keyword}>
-          <button type='button'>
-            <SearchIcon className={styles.icon} />
-            <span>간암</span>
-          </button>
-        </li>
-      </ul>
+      {!isTextEmpty && (
+        <ul className={styles.searchKeywordWrap}>
+          {!isLoading && data && <li className={styles.state}>추천 검색어</li>}
+          {isLoading && <li className={styles.state}>검색 중...</li>}
+          {sortedData &&
+            sortedData.map((disease: IClinicalTrial, index: number) => (
+              <SearchResult key={`clinical-${disease.sickCd}`} sickNm={disease.sickNm} index={index} />
+            ))}
+          {!isLoading && !data && <li className={styles.state}>검색어가 없습니다.</li>}
+        </ul>
+      )}
     </div>
   );
 };
