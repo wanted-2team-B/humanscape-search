@@ -1,4 +1,4 @@
-import { atom } from '../hooks/state';
+import { atom } from 'recoil';
 
 export const mSearchBtnClickState = atom<boolean>({
   key: 'mSearchBtnClickState',
@@ -10,7 +10,7 @@ export const searchInputValue = atom<string>({
   default: '',
 });
 
-export const activeIndexState = atom<number>({
-  key: 'activeIndexState',
+export const activeItemIndexState = atom<number>({
+  key: 'activeItemIndexState',
   default: -1,
 });
