@@ -4,23 +4,24 @@ import { useRecoilValue } from 'recoil';
 
 import styles from './SearchResultItem.module.scss';
 
-import { SearchIcon } from '../../assets';
 import { boldedSickNm } from '../../libs/bold';
-import { activeItemIndexState } from '../../states/search';
+import { activeItemIndexState, searchInputValue } from '../../states/search';
+import { SearchIcon } from '../../assets';
 
 interface IProps {
-  keyword: string;
   index: number;
   sickNm: string;
 }
 
-const SearchResultItem = ({ keyword, sickNm, index }: IProps) => {
+const SearchResultItem = ({ sickNm, index }: IProps) => {
+  const searchText = useRecoilValue(searchInputValue);
   const activeItemIndex = useRecoilValue(activeItemIndexState);
+
   return (
     <li className={cx(styles.keyword, { [styles.isActive]: activeItemIndex === index })}>
       <button type='button'>
         <SearchIcon className={styles.icon} />
-        <span>{parse(boldedSickNm(keyword, sickNm))}</span>
+        <span>{parse(boldedSickNm(searchText, sickNm))}</span>
       </button>
     </li>
   );

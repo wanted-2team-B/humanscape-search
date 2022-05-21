@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { RecoilRoot } from 'recoil';
-import reportWebVitals from './reportWebVitals';
 import RootRoute from './routes';
+import reportWebVitals from './reportWebVitals';
 import './styles/index.scss';
 
 const queryClient = new QueryClient();
