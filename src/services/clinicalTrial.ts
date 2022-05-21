@@ -23,6 +23,7 @@ export const getClinicalTrialData = async (searchText: string): Promise<IClinica
     const responseItem = items.item;
     number += 1;
 
+    // eslint-disable-next-line no-console
     console.log('api call count: ', number);
     if (totalCount !== 1) {
       return responseItem;
