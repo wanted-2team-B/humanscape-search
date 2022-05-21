@@ -2,6 +2,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Input from '../components/Input/Input';
 import MSearchModal from '../components/Portal';
+<<<<<<< HEAD
 import SearchResult from '../components/Search/SearchResultItem';
 
 import styles from './Routes.module.scss';
@@ -14,6 +15,20 @@ import { mSearchBtnClickState, searchInputValue } from '../states/search';
 import { SearchIcon } from '../assets/index';
 
 import useClinicalTrialData from '../hooks/useClinicalTrialData';
+=======
+import SearchResultItem from '../components/Search/SearchResultItem';
+>>>>>>> a191d26c2d3bae036f143fab7b7b5fa2d43f6a22
+
+import styles from './Routes.module.scss';
+
+import { sortResult } from '../libs/sort';
+
+import { IClinicalTrial } from '../types/clinicalTrial';
+
+import { mSearchBtnClickState, searchInputValue } from '../states/search';
+
+import useClinicalTrialData from '../hooks/useClinicalTrialData';
+import { SearchIcon } from '../assets';
 
 const RootRoute = () => {
   const [mSearchClicked, setMSearchClicked] = useRecoilState(mSearchBtnClickState);
@@ -48,9 +63,9 @@ const RootRoute = () => {
             {!isLoading && data && <li className={styles.state}>추천 검색어</li>}
             {isLoading && <li className={styles.state}>검색 중...</li>}
             {spliceArr &&
-              spliceArr.map((disease: IClinicalTrial, index: number) => {
-                return <SearchResult key={`clinical-${disease.sickCd}`} sickNm={disease.sickNm} index={index} />;
-              })}
+              spliceArr.map((disease: IClinicalTrial, index: number) => (
+                <SearchResultItem key={`clinical-${disease.sickCd}`} sickNm={disease.sickNm} index={index} />
+              ))}
             {!isLoading && !data && <li className={styles.state}>검색어가 없습니다.</li>}
           </ul>
         )}

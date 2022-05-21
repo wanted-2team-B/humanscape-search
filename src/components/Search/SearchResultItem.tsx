@@ -4,7 +4,6 @@ import { useRecoilValue } from 'recoil';
 
 import styles from './SearchResultItem.module.scss';
 
-import { SearchIcon } from '../../assets';
 import { boldedSickNm } from '../../libs/bold';
 import { activeIndexState, searchInputValue } from '../../states/search';
 

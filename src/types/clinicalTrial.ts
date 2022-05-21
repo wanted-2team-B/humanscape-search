@@ -13,4 +13,3 @@ export interface IClinicalTrial {
   sickCd: string;
   sickNm: string;
 }
-
