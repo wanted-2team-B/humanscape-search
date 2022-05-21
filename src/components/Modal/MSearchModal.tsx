@@ -1,21 +1,23 @@
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
 
 import Input from '../Input/Input';
 import SearchResult from '../Search/SearchResultItem';
 
 import styles from './MSearchModal.module.scss';
 
-import { mSearchBtnClickState, searchInputValue } from '../../states/search';
+import { mSearchBtnClickState, searchInputValue } from '../../recoil/search';
 import { IClinicalTrial } from '../../types/clinicalTrial';
 import { BackIcon, ClearIcon, SearchIcon } from '../../assets';
-
 import useClinicalTrialData from '../../hooks/useClinicalTrialData';
-import { sortResult } from '../../libs/sort';
+import { sortResult } from '../../utils/sort';
 
 const ModalOverlay = () => {
   const setMSearchClicked = useSetRecoilState(mSearchBtnClickState);
-  const [searchText, setSearchText] = useRecoilState(searchInputValue);
+  const searchText = useRecoilValue(searchInputValue);
+  const resetSearchText = useResetRecoilState(searchInputValue);
+
   const { data, isLoading, isTextEmpty } = useClinicalTrialData();
+
   const sortedData = data && sortResult(data, searchText);
 
   const handleSearchModalClose = () => {
@@ -23,7 +25,7 @@ const ModalOverlay = () => {
   };
 
   const handleClearInput = () => {
-    setSearchText('');
+    resetSearchText();
   };
 
   return (

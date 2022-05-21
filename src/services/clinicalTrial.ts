@@ -17,7 +17,7 @@ export const getClinicalTrialData = async (searchText: string): Promise<IClinica
         medTp: 2,
       },
     });
-    const emptyArr: IClinicalTrial[] = [];
+    const singleItemArr: IClinicalTrial[] = [];
     const { items, totalCount } = data.response.body;
     const responseItem = items.item;
     number += 1;
@@ -28,7 +28,7 @@ export const getClinicalTrialData = async (searchText: string): Promise<IClinica
       return responseItem;
     }
 
-    return emptyArr.concat(responseItem);
+    return singleItemArr.concat(responseItem);
   } catch (error) {
     throw new Error('API 호출 실패');
   }

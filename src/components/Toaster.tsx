@@ -1,8 +1,7 @@
-import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
 export const StyledToaster = () => {
-  const isDesktop = window.innerWidth > 1000;
+  const isDesktop = window.innerWidth >= 1000;
   return (
     <Toaster
       position={isDesktop ? 'top-center' : 'bottom-center'}

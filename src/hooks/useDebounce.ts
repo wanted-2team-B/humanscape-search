@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 
-import { activeIndexState } from '../states/search';
+import { activeIndexState } from '../recoil/search';
 
 const useDebounce = (value: string, delay: number = 500) => {
-  const [debounceValue, setDebounceValue] = useState(value);
   const setActiveItemIndex = useSetRecoilState(activeIndexState);
+  const [debounceValue, setDebounceValue] = useState(value);
 
   useEffect(() => {
     const timer: NodeJS.Timeout = setTimeout(() => {

@@ -1,11 +1,11 @@
+import { useRecoilValue } from 'recoil';
 import cx from 'classnames';
 import parse from 'html-react-parser';
-import { useRecoilValue } from 'recoil';
 
 import styles from './SearchResultItem.module.scss';
 
-import { boldedSickNm } from '../../libs/bold';
-import { activeIndexState, searchInputValue } from '../../states/search';
+import { boldedSickNm } from '../../utils/bold';
+import { activeIndexState, searchInputValue } from '../../recoil/search';
 import { SearchIcon } from '../../assets/index';
 
 interface IProps {

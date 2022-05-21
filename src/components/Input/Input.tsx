@@ -1,17 +1,19 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import useClinicalTrialData from '../../hooks/useClinicalTrialData';
-import { sortResult } from '../../libs/sort';
 
-import { activeIndexState, searchInputValue } from '../../states/search';
+import useClinicalTrialData from '../../hooks/useClinicalTrialData';
+import { sortResult } from '../../utils/sort';
+import { activeIndexState, searchInputValue } from '../../recoil/search';
 
 const Input = () => {
   const [searchText, setSearchText] = useRecoilState(searchInputValue);
   const [activeIndex, setactiveIndex] = useRecoilState(activeIndexState);
+
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
   const inputRef = useRef<HTMLInputElement>(null);
+
   const { data } = useClinicalTrialData();
   const sortedData = data && sortResult(data, searchText);
-  const [windowSize, setWindowSize] = useState(window.innerWidth);
   const sliceData = sortedData && sortedData.slice(0, 7);
 
   useEffect(() => {
@@ -28,6 +30,12 @@ const Input = () => {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [inputRef]);
 
   const handleItemActive = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) return;
@@ -61,12 +69,6 @@ const Input = () => {
       }
     }
   };
-
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [inputRef]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.currentTarget.value);

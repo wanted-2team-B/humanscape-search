@@ -1,12 +1,12 @@
 import { useRecoilValue } from 'recoil';
 import { useQuery } from 'react-query';
+import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 
-import { searchInputValue } from '../states/search';
+import { searchInputValue } from '../recoil/search';
 import useDebounce from './useDebounce';
 import { getClinicalTrialData } from '../services/clinicalTrial';
-import { checkWord } from '../libs/checkWord';
-import { AxiosError } from 'axios';
+import { checkWord } from '../utils/checkWord';
 
 const useClinicalTrialData = () => {
   const searchText = useRecoilValue(searchInputValue);

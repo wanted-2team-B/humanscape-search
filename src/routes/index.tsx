@@ -3,23 +3,22 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import Input from '../components/Input/Input';
 import MSearchModal from '../components/Portal';
 import SearchResultItem from '../components/Search/SearchResultItem';
+import { StyledToaster } from '../components/Toaster';
 
 import styles from './Routes.module.scss';
 
-import { sortResult } from '../libs/sort';
-
 import { IClinicalTrial } from '../types/clinicalTrial';
-
-import { mSearchBtnClickState, searchInputValue } from '../states/search';
+import { mSearchBtnClickState, searchInputValue } from '../recoil/search';
 import { SearchIcon } from '../assets/index';
-
+import { sortResult } from '../utils/sort';
 import useClinicalTrialData from '../hooks/useClinicalTrialData';
-import { StyledToaster } from '../components/Toaster';
 
 const RootRoute = () => {
   const [mSearchClicked, setMSearchClicked] = useRecoilState(mSearchBtnClickState);
-  const { data, isLoading, error, isTextEmpty } = useClinicalTrialData();
   const searchText = useRecoilValue(searchInputValue);
+
+  const { data, isLoading, error, isTextEmpty } = useClinicalTrialData();
+
   const sortedData = data && sortResult(data, searchText);
   const sliceData = sortedData && sortedData.slice(0, 7);
 
@@ -42,7 +41,7 @@ const RootRoute = () => {
           <button type='submit'>검색</button>
         </div>
         <button type='button' onClick={handleMSearchBtnClick} className={styles.mInputWrap}>
-          <span>{searchText.length !== 0 ? searchText : '질환명을 입력해주세요.'}</span>
+          <span>{searchText || '질환명을 입력해주세요.'}</span>
           <SearchIcon className={styles.icon} />
         </button>
         {!isTextEmpty && (
