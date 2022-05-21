@@ -1,14 +1,13 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import useClinicalTrialData from '../../hooks/useClinicalTrialData';
 import { sortResult } from '../../libs/sort';
 
-import { activeItemIndexState, searchInputValue } from '../../states/search';
-import { IKeyboard } from '../../types/clinicalTrial';
+import { activeIndexState, searchInputValue } from '../../states/search';
 
 const Input = () => {
   const [searchText, setSearchText] = useRecoilState(searchInputValue);
-  const [activeItemIndex, setactiveItemIndex] = useRecoilState(activeItemIndexState);
+  const [activeIndex, setactiveIndex] = useRecoilState(activeIndexState);
   const inputRef = useRef<HTMLInputElement>(null);
   const { data } = useClinicalTrialData();
   const sortedData = data && sortResult(data, searchText);
@@ -16,8 +15,8 @@ const Input = () => {
 
   useEffect(() => {
     if (!inputRef.current || !sortedData) return;
-    inputRef.current.value = activeItemIndex === -1 ? searchText : sortedData[activeItemIndex].sickNm;
-  }, [activeItemIndex, sortedData, searchText]);
+    inputRef.current.value = activeIndex === -1 ? searchText : sortedData[activeIndex].sickNm;
+  }, [activeIndex, sortedData, searchText]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,35 +28,35 @@ const Input = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleItemActive = (e: IKeyboard) => {
-    // if (e.nativeEvent.isComposing) return;
+  const handleItemActive = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing) return;
     if (!sortedData) return;
     const itemLength = windowSize < 1000 ? sortedData.length : 7;
     const key = e.key || e.keyCode;
 
     if (key === 'ArrowUp' || key === 38) {
       e.preventDefault();
-      switch (activeItemIndex) {
+      switch (activeIndex) {
         case -1:
-          setactiveItemIndex(itemLength - 1);
+          setactiveIndex(itemLength - 1);
           break;
         case 0:
-          setactiveItemIndex(-1);
+          setactiveIndex(-1);
           break;
         default:
-          setactiveItemIndex((prevIndex) => (prevIndex - 1) % itemLength);
+          setactiveIndex((prevIndex) => (prevIndex - 1) % itemLength);
       }
     }
     if (key === 'ArrowDown' || key === 40) {
-      switch (activeItemIndex) {
+      switch (activeIndex) {
         case -1:
-          setactiveItemIndex(0);
+          setactiveIndex(0);
           break;
         case itemLength - 1:
-          setactiveItemIndex(-1);
+          setactiveIndex(-1);
           break;
         default:
-          setactiveItemIndex((prevIndex) => (prevIndex + 1) % itemLength);
+          setactiveIndex((prevIndex) => (prevIndex + 1) % itemLength);
       }
     }
   };

@@ -14,8 +14,3 @@ export interface IClinicalTrial {
   sickNm: string;
 }
 
-export interface IKeyboard {
-  key: string;
-  keyCode: number;
-  preventDefault: () => void;
-}

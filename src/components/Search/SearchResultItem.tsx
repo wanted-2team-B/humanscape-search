@@ -6,7 +6,7 @@ import styles from './SearchResultItem.module.scss';
 
 import { SearchIcon } from '../../assets';
 import { boldedSickNm } from '../../libs/bold';
-import { activeItemIndexState, searchInputValue } from '../../states/search';
+import { activeIndexState, searchInputValue } from '../../states/search';
 
 interface IProps {
   index: number;
@@ -15,10 +15,10 @@ interface IProps {
 
 const SearchResultItem = ({ sickNm, index }: IProps) => {
   const searchText = useRecoilValue(searchInputValue);
-  const activeItemIndex = useRecoilValue(activeItemIndexState);
+  const activeIndex = useRecoilValue(activeIndexState);
 
   return (
-    <li className={cx(styles.keyword, { [styles.isActive]: activeItemIndex === index })}>
+    <li className={cx(styles.keyword, { [styles.isActive]: activeIndex === index })}>
       <button type='button'>
         <SearchIcon className={styles.icon} />
         <span>{parse(boldedSickNm(searchText, sickNm))}</span>

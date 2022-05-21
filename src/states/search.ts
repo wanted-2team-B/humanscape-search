@@ -10,7 +10,7 @@ export const searchInputValue = atom<string>({
   default: '',
 });
 
-export const activeItemIndexState = atom<number>({
-  key: 'activeItemIndexState',
+export const activeIndexState = atom<number>({
+  key: 'activeIndexState',
   default: -1,
 });
