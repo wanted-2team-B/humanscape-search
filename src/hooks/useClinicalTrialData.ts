@@ -6,6 +6,7 @@ import { searchInputValue } from '../states/search';
 import useDebounce from './useDebounce';
 import { getClinicalTrialData } from '../services/clinicalTrial';
 import { checkWord } from '../libs/checkWord';
+import { AxiosError } from 'axios';
 
 const useClinicalTrialData = () => {
   const searchText = useRecoilValue(searchInputValue);
@@ -22,7 +23,7 @@ const useClinicalTrialData = () => {
       staleTime: 5 * 60 * 1000,
       retry: false,
       refetchOnWindowFocus: false,
-      onError(err: ErrorEvent) {
+      onError(err: AxiosError) {
         toast.remove();
         toast.error(`${err.message}! 새로 고침 해주세요.`);
       },
