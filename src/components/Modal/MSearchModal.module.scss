@@ -15,11 +15,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    height: 56px;
     border-bottom: 2px solid colors.$BORDER;
 
     .backBtn {
-      margin-left: 10px;
+      padding: 10px 20px;
 
       .backIcon {
         width: 18px;
@@ -30,7 +30,7 @@
 
     input[type='text'] {
       width: 100%;
-      padding-left: 15px;
+      height: 100%;
 
       &::placeholder {
         font-weight: 500;
@@ -39,17 +39,23 @@
       }
     }
 
-    .clearIcon {
-      width: 15px;
-      padding-top: 4px;
-      margin-right: 10px;
-      fill: colors.$BORDER;
+    .clearBtn {
+      padding: 10px;
+
+      .clearIcon {
+        width: 18px;
+        padding-top: 4px;
+        fill: colors.$BORDER;
+      }
     }
 
-    .searchIcon {
-      width: 20px;
-      padding-top: 4px;
-      margin-right: 10px;
+    .submitBtn {
+      padding: 10px;
+
+      .searchIcon {
+        width: 20px;
+        padding-top: 5px;
+      }
     }
   }
 

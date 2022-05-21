@@ -34,11 +34,11 @@ const ModalOverlay = () => {
         </button>
         <Input />
         {!isTextEmpty && (
-          <button type='button' onClick={handleClearInput}>
+          <button type='button' className={styles.clearBtn} onClick={handleClearInput}>
             <ClearIcon className={styles.clearIcon} />
           </button>
         )}
-        <button type='submit'>
+        <button type='submit' className={styles.submitBtn}>
           <SearchIcon className={styles.searchIcon} />
         </button>
       </div>
