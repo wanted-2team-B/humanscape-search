@@ -10,7 +10,7 @@ export const getClinicalTrialData = async (searchText: string): Promise<IClinica
       {
         params: {
           searchText,
-          numOfRows: 30, // 큰 화면으로 보면 검색결과가 7개 이상임
+          numOfRows: 30,
           pageNo: 1,
           sickType: 1,
           diseaseType: 'SICK_NM',

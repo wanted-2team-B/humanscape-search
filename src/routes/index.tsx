@@ -14,6 +14,7 @@ import { mSearchBtnClickState, searchInputValue } from '../states/search';
 import { SearchIcon } from '../assets/index';
 
 import useClinicalTrialData from '../hooks/useClinicalTrialData';
+import { StyledToaster } from '../components/Toaster';
 
 const RootRoute = () => {
   const [mSearchClicked, setMSearchClicked] = useRecoilState(mSearchBtnClickState);
@@ -28,6 +29,7 @@ const RootRoute = () => {
 
   return (
     <div className={styles.app}>
+      {error && <StyledToaster />}
       {mSearchClicked && <MSearchModal />}
       <div className={styles.mainWrap}>
         <h1 className={styles.title}>
