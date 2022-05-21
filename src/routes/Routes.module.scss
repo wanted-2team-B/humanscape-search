@@ -1,5 +1,5 @@
-@use '../styles/constants/colors';
-@use '../styles/mixins/position';
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/position';
 @use '/src/styles/mixins/responsive';
 
 .app {
@@ -8,122 +8,102 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     height: 100vh;
+    padding-top: 250px;
     background-color: colors.$BACK;
 
     .title {
       margin-bottom: 22px;
       font-size: 32px;
+      font-weight: 600;
       line-height: 1.5;
       text-align: center;
-      font-weight: 600;
     }
-    
+
     .inputWrap {
-      display: flex;
       position: relative;
-  
-      input[type=text] {
-        padding: 22px 53px;
+      display: flex;
+
+      input[type='text'] {
         width: 550px;
+        padding: 22px 53px;
         font-size: 17px;
+        background-color: colors.$WHITE;
         border-top-left-radius: 35px;
         border-bottom-left-radius: 35px;
-        background-color: colors.$WHITE;
-  
+
         &::placeholder {
           color: colors.$GRAYA;
         }
       }
-  
+
       .icon {
         @include position.absolute(22px auto auto 24px);
         width: 18px;
       }
-  
+
       button {
-        padding: 23px;
         width: 100px;
+        padding: 23px;
         font-size: 18px;
         font-weight: bold;
-        border-top-right-radius: 35px;
-        border-bottom-right-radius: 35px;
         color: colors.$WHITE;
         background-color: colors.$BLUE;
+        border-top-right-radius: 35px;
+        border-bottom-right-radius: 35px;
       }
     }
+
     .mInputWrap {
       display: none;
     }
-  
+
     .searchKeywordWrap {
-      margin-top: 8px;
-      padding: 22px;
       width: 650px;
-      border-radius: 20px;
+      padding: 22px;
+      margin-top: 8px;
       background-color: colors.$WHITE;
-  
+      border-radius: 20px;
+
       .state {
         font-size: 13px;
         font-weight: 400;
         color: colors.$GRAY6;
-      }
-  
-      .keyword {
-        button {
-          display: flex;
-          align-items: center;
-          width: 100%;
-          margin: 10px 0;
-  
-          &:last-child {
-            margin-bottom: 0;
-          }
-  
-          .icon {
-            margin-right: 10px;
-            width: 18px;
-          }
-          
-          span {
-            margin-top: -1px;
-            font-size: 17px;
-            font-weight: 400;
-          }
-        }
-
-        &.isActive {
-          background-color: colors.$BACK;
-        }
       }
     }
     @include responsive.between(M, MD) {
       .title {
         font-size: 22px;
       }
+
       .inputWrap {
         display: none;
       }
+
       .mInputWrap {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        padding: 8px 20px;
+        justify-content: space-between;
         width: 95%;
+        padding: 8px 20px;
         background-color: colors.$WHITE;
         border-radius: 25px;
         box-shadow: 2px 2px 2px rgba(colors.$SHADOW, 0.2);
-  
+
         span {
           font-size: 14px;
           font-weight: 500;
           color: colors.$GRAYA;
         }
+
         .icon {
           width: 20px;
         }
       }
-    }        
-  }  
+
+      .searchKeywordWrap {
+        display: none;
+      }
+    }
+  }
 }

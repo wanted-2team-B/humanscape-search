@@ -1,83 +1,55 @@
-import { ChangeEvent, useEffect, useRef } from 'react';
+import { FormEvent } from 'react';
 import cx from 'classnames';
 import styles from './Routes.module.scss';
-import { useRecoil } from '../hooks/state';
-import { IKeyboard } from '../types/clinicalTrial';
+import { IClinicalTrial, IKeyboard } from '../types/clinicalTrial';
 import { mSearchBtnClickState, searchInputValue, activeIndexState } from '../states/search';
-import MSearchModal from '../components/MSearchModal';
+import MSearchModal from '../components/Modal/MSearchModal';
 import { SearchIcon } from '../assets/index';
 import { getClinicalTrialData } from '../services/clinicalTrial';
 import { useQuery } from 'react-query';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import useDebounce from '../hooks/useDebounce';
+import Input from '../components/Input/Input';
+import SearchResultItem from '../components/Search/SearchResultItem';
 
 const RootRoute = () => {
-  const [mSearchClicked, setMSearchClicked] = useRecoil(mSearchBtnClickState);
-  const [searchText, setSearchText] = useRecoil(searchInputValue);
-  const [activeIndex, setActiveIndex] = useRecoil(activeIndexState);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [mSearchClicked, setMSearchClicked] = useRecoilState(mSearchBtnClickState);
+
+  const searchText = useRecoilValue(searchInputValue);
+  const debounceInputValue = useDebounce(searchText);
+  const isTextEmpty: boolean = debounceInputValue.trim() === '';
+
+  const { data, isLoading, error } = useQuery(
+    ['clinicInfo', debounceInputValue],
+    () => getClinicalTrialData(debounceInputValue),
+    {
+      enabled: !isTextEmpty,
+      cacheTime: 10 * 60 * 1000, // 10분정도 캐시에 머무르고 그 이후로 가비지 콜렉터로 들어간다..
+      staleTime: 5 * 60 * 1000, // 5분이 지나면 최신화가 필요하다고 생각하고 refetch
+      onError(err) {
+        console.log(err);
+      },
+    }
+  );
 
   const handleMSearchBtnClick = () => {
     setMSearchClicked(true);
   };
-  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.currentTarget.value);
-  };
 
-  const dummyData = ['검색1', '검색2', '검색3', '검색4', '검색5', '검색6', '검색7'];
-
-  useEffect(() => {
-    if (!inputRef.current || !dummyData) return;
-    inputRef.current.value = activeIndex === -1 ? searchText : dummyData[activeIndex];
-  }, [activeIndex, dummyData, searchText]);
-
-  const handleItemActive = (e: IKeyboard) => {
-    if (!dummyData) return;
-    const itemLength = dummyData.length;
-    const key = e.key || e.keyCode;
-
-    if (key === 'ArrowUp' || key === 38) {
-      e.preventDefault();
-      switch (activeIndex) {
-        case -1:
-          setActiveIndex(itemLength - 1);
-          break;
-        case 0:
-          setActiveIndex(-1);
-          break;
-        default:
-          setActiveIndex((prevIndex) => (prevIndex - 1) % itemLength);
-      }
-    }
-    if (key === 'ArrowDown' || key === 40) {
-      switch (activeIndex) {
-        case -1:
-          setActiveIndex(0);
-          break;
-        case itemLength - 1:
-          setActiveIndex(-1);
-          break;
-        default:
-          setActiveIndex((prevIndex) => (prevIndex + 1) % itemLength);
-      }
-    }
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
   };
 
   return (
-    <form className={styles.app}>
-      {mSearchClicked && <MSearchModal />}
+    <form className={styles.app} onSubmit={handleSubmit}>
+      {mSearchClicked && <MSearchModal data={data} isTextEmpty={isTextEmpty} isLoading={isLoading} />}
       <div className={styles.mainWrap}>
         <h1 className={styles.title}>
           국내 모든 임상시험 검색하고
           <br /> 온라인으로 참여하기
         </h1>
         <div className={styles.inputWrap}>
-          <input
-            type='text'
-            value={searchText}
-            ref={inputRef}
-            onChange={handleChangeInput}
-            placeholder='질환명을 입력해 주세요.'
-            onKeyDown={handleItemActive}
-          />
+          <Input data={data} />
           <SearchIcon className={styles.icon} />
           <button type='submit'>검색</button>
         </div>
@@ -85,21 +57,23 @@ const RootRoute = () => {
           <span>{searchText.length !== 0 ? searchText : '질환명을 입력해주세요.'}</span>
           <SearchIcon className={styles.icon} />
         </button>
-        <ul className={styles.searchKeywordWrap}>
-          <li className={styles.state}>추천 검색어</li>
-          {searchText &&
-            dummyData.map((item, index) => {
-              return (
-                <li className={cx(styles.keyword, { [styles.isActive]: activeIndex === index })} key={item}>
-                  <button type='button'>
-                    <SearchIcon className={styles.icon} />
-                    <span>{item}</span>
-                  </button>
-                </li>
-              );
-            })}
-        </ul>
-        
+
+        {!isTextEmpty && (
+          <ul className={styles.searchKeywordWrap}>
+            {!isLoading && data && <li className={styles.state}>추천 검색어</li>}
+            {isLoading && <li className={styles.state}>검색 중...</li>}
+            {data &&
+              data.map((disease: IClinicalTrial, index: number) => (
+                <SearchResultItem
+                  key={`clinical-${disease.sickCd}${Math.random()}`}
+                  keyword={searchText}
+                  sickNm={disease.sickNm}
+                  index={index}
+                />
+              ))}
+            {!isLoading && !data && <li className={styles.state}>검색어가 없습니다.</li>}
+          </ul>
+        )}
       </div>
     </form>
   );
