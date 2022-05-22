@@ -10,7 +10,7 @@ import styles from './Routes.module.scss';
 import { IClinicalTrial } from '../types/clinicalTrial';
 import { mSearchBtnClickState, searchInputValue } from '../recoil/search';
 import { SearchIcon } from '../assets/index';
-import { sortResult } from '../utils/sort';
+
 import useClinicalTrialData from '../hooks/useClinicalTrialData';
 
 const RootRoute = () => {
@@ -19,8 +19,7 @@ const RootRoute = () => {
 
   const { data, isLoading, error, isTextEmpty } = useClinicalTrialData();
 
-  const sortedData = data && sortResult(data, searchText);
-  const sliceData = sortedData && sortedData.slice(0, 7);
+  const sliceData = data && data.slice(0, 7);
 
   const handleMSearchBtnClick = () => {
     setMSearchClicked(true);
