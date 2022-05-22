@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import RootRoute from './routes';
 import reportWebVitals from './reportWebVitals';
 import './styles/index.scss';
@@ -16,7 +15,6 @@ root.render(
       <RecoilRoot>
         <RootRoute />
       </RecoilRoot>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>
 );
