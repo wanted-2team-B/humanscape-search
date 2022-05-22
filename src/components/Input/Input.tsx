@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 
 import useClinicalTrialData from '../../hooks/useClinicalTrialData';
@@ -9,7 +9,6 @@ const Input = () => {
   const [searchText, setSearchText] = useRecoilState(searchInputValue);
   const [activeIndex, setactiveIndex] = useRecoilState(activeIndexState);
 
-  const [windowSize, setWindowSize] = useState(window.innerWidth);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data } = useClinicalTrialData();
@@ -22,16 +21,6 @@ const Input = () => {
   }, [activeIndex, sortedData, searchText]);
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowSize(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -40,7 +29,7 @@ const Input = () => {
   const handleItemActive = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) return;
     if (!sortedData || !sliceData) return;
-    const itemLength = windowSize < 1000 ? sortedData.length : sliceData.length;
+    const itemLength = window.innerWidth < 1000 ? sortedData.length : sliceData.length;
     const key = e.key || e.keyCode;
 
     if (key === 'ArrowUp' || key === 38) {
