@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import { useRecoilValue } from 'recoil';
 import cx from 'classnames';
 import parse from 'html-react-parser';
@@ -17,8 +19,16 @@ const SearchResultItem = ({ sickNm, index }: IProps) => {
   const searchText = useRecoilValue(searchInputValue);
   const activeIndex = useRecoilValue(activeIndexState);
 
+  const itemRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (itemRef.current && index === activeIndex) {
+      itemRef.current.scrollIntoView(false);
+    }
+  }, [index, activeIndex]);
+
   return (
-    <li className={cx(styles.keyword, { [styles.isActive]: activeIndex === index })}>
+    <li className={cx(styles.keyword, { [styles.isActive]: activeIndex === index })} ref={itemRef}>
       <button type='button'>
         <SearchIcon className={styles.icon} />
         <span>{parse(boldedSickNm(searchText, sickNm))}</span>
