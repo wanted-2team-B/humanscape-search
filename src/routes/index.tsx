@@ -25,6 +25,8 @@ const RootRoute = () => {
     setMSearchClicked(true);
   };
 
+  console.log(data);
+
   return (
     <div className={styles.app}>
       {error && <StyledToaster />}

@@ -6,7 +6,7 @@ let number = 0;
 
 const PROXY = window.location.hostname === 'localhost' ? '/B551182/diseaseInfoService/getDissNameCodeList' : '/proxy';
 
-export const getClinicalTrialData = async (searchText: string): Promise<IClinicalTrial[]> => {
+export const getClinicalTrialData = async (searchText: string): Promise<IClinicalTrial[] | undefined> => {
   try {
     const { data } = await axios.get<IClinicalTrials>(`${PROXY}?ServiceKey=${process.env.REACT_APP_API_KEY}`, {
       params: {
@@ -25,6 +25,11 @@ export const getClinicalTrialData = async (searchText: string): Promise<IClinica
 
     // eslint-disable-next-line no-console
     console.log('api call count: ', number);
+
+    if (totalCount === 0) {
+      return undefined;
+    }
+
     if (totalCount !== 1) {
       return sortResult(responseItem, searchText);
     }
